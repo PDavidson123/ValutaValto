@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import DataHandler
 
 def open_reviews_window():
     layout=[[sg.Text('Keresés az alábbi szerint:',size=(20, 1), font='Lucida',justification='left')],
@@ -24,14 +25,17 @@ def open_reviews_window():
 
 def open_options_window():
     layout=[[sg.Text('Keresések mentésének elérési útja:',size=(30, 1), font='Lucida',justification='left')],
-            [sg.InputText(size=(20, 1), key='pathInput', tooltip='Minta: C:\\ValutaMentes')]]
+            [sg.InputText(size=(20, 1), key='pathInput', default_text=DataHandler.DataHandler.GetPath(), tooltip='Minta: C:\\ValutaMentes'), sg.Button("Mentés", key="SaveButton")]]
 
     window = sg.Window("Előzmények", layout, modal=True)
-    choice = None
+    
     while True:
         event, values = window.read()
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
+        if event == "SaveButton":
+            DataHandler.DataHandler.SetPath(values['pathInput'])
+            sg.Popup('A mentés sikeresen megtörtént.', keep_on_top=True)
 
         
     window.close
