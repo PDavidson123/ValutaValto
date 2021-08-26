@@ -4,7 +4,7 @@ import Valto
 
 def open_reviews_window():
     layout=[[sg.Text('Keresés az alábbi szerint:',size=(20, 1), font='Lucida',justification='left')],
-            [sg.Combo(('Dátum','Valuta'), default_value='Dátum', readonly=True, enable_events=True, size=(8, 2),key='keresesAlap'), sg.Combo(Valto.penznemek, readonly=True, enable_events=True, size=(5, 6),key='keresendoValuta', visible=False), sg.InputText(size=(20, 1), key='keresendoDatum', tooltip='Minta: 2020-08-24')],
+            [sg.Combo(('Dátum','Valuta'), default_value='Dátum', readonly=True, enable_events=True, size=(8, 2),key='keresesAlap'), sg.Combo(Valto.Valto.penznemek, readonly=True, enable_events=True, size=(5, 6),key='keresendoValuta', visible=False), sg.InputText(size=(20, 1), key='keresendoDatum', tooltip='Minta: 2020-08-24')],
             [sg.Button("Keresés", key="SearchButton")],
             [sg.Listbox(values= DataHandler.DataHandler.GetFileLists(), key='tranzList', size=(30, 10))]]
 
@@ -49,7 +49,7 @@ def open_options_window():
 
 def main():
     layout = [[sg.Text('Írja be mennyit, majd válassza ki mit mire szeretne átváltani.', size=(50, 1), font='Lucida',justification='left')],
-              [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.penznemek,default_value='HUF', readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.penznemek,default_value='EUR', readonly=True, enable_events=True, size=(5, 6),key='mire')],
+              [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[0], readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[1], readonly=True, enable_events=True, size=(5, 6),key='mire')],
               [sg.Text('', size=(50, 1), font='Lucida',justification='left', key='valtoztat')],
               [sg.Button("Előzmények", size=(10, 1), key="OpenReviewsWindow"), sg.Button("Beállítások", size=(10, 1), key="OpenOptionsWindow")]]
 
@@ -62,14 +62,14 @@ def main():
             open_reviews_window()
         if event == "OpenOptionsWindow":
             open_options_window()
-        #if event == "mennyit" and values['valtoztat'] == '' and values['mennyit'] is '':
-        #    window.Element('valtoztat').Update('')
+        if event == "mennyit" and values['mennyit'] is '':
+            window.Element('valtoztat').Update('')
         if event == "mennyit" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
         if event == "mit" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
         if event == "mire" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
         
     window.close()
 

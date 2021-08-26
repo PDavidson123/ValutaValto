@@ -1,3 +1,4 @@
+import DataHandler
 
 class Valto:
 
@@ -8,3 +9,18 @@ class Valto:
         valtasEredmeny = 123456
 
         return mennyit + " " + mit + " = " + str(valtasEredmeny) + " " + mire
+
+    def GetValutaListWithFirstFive():
+        thatfive = DataHandler.DataHandler.GetLastFiveValuta()
+        anothers = set(Valto.penznemek)
+
+        lastItems = anothers.difference(thatfive)
+
+        makedList = []
+
+        for i in thatfive:
+            makedList.append(i)
+        for i in sorted(list(lastItems)):
+            makedList.append(i)
+
+        return makedList

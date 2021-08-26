@@ -57,3 +57,17 @@ class DataHandler:
 
         return DataHandler.GetGoodFormat(goodTranz)
 
+    def GetLastFiveValuta():
+        fivelist = []
+
+        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
+        formedTranz = reversed([i.split("--").pop() for i in fullnames]) # Idő nélküli tranzakció nevek
+
+        for i in formedTranz:
+            splitted = i.split("_")
+            if len(fivelist) < 5 and splitted[1] not in fivelist:
+                fivelist.append(splitted[1])
+            if len(fivelist) < 5 and splitted[3] not in fivelist:
+                fivelist.append(splitted[3])
+
+        return fivelist
