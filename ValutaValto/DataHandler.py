@@ -30,18 +30,30 @@ class DataHandler:
         if not os.path.isdir(DataHandler.realpath):
             os.mkdir(DataHandler.realpath)
         
-    def GetFileLists():
-        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
-        justnames = [i.split("--").pop() for i in fullnames] # Dátumot kivesszük
-
+    def GetGoodFormat(list):
         retlist = []
 
-        for i in justnames:
+        for i in list:
             splitted = i.split("_")
             retlist.append(splitted[0] + " " + splitted[1] + " átváltva " + splitted[2] + " " + splitted[3] + "-ra/re")
 
         return retlist
 
+    def GetFileLists():
+        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
+        justnames = [i.split("--").pop() for i in fullnames] # Dátumot kivesszük
+
+        return DataHandler.GetGoodFormat(justnames)
+
     def GetFileListByDates(date):
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
-        return [i.split("--").pop() for i in fullnames if i.split("--")[0] == date]
+        goodTranz = [i.split("--").pop() for i in fullnames if i.split("--")[0] == date]
+
+        return DataHandler.GetGoodFormat(goodTranz)
+
+    def GetFileListByValuta(valuta):
+        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
+        goodTranz = [i.split("--").pop() for i in fullnames if valuta in i.split("--")[1].split("_")]
+
+        return DataHandler.GetGoodFormat(goodTranz)
+

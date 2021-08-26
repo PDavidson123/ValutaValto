@@ -22,6 +22,9 @@ def open_reviews_window():
         if event == "SearchButton" and values['keresesAlap'] == "Dátum":
             window['tranzList'].update([])
             window['tranzList'].update(DataHandler.DataHandler.GetFileListByDates(values['keresendoDatum']))
+        if event == "SearchButton" and values['keresesAlap'] == "Valuta":
+            window['tranzList'].update([])
+            window['tranzList'].update(DataHandler.DataHandler.GetFileListByValuta(values['keresendoValuta']))
 
         
     window.close
@@ -48,10 +51,6 @@ def main():
               [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.penznemek,default_value='HUF', readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.penznemek,default_value='EUR', readonly=True, enable_events=True, size=(5, 6),key='mire')],
               [sg.Text('', size=(50, 1), font='Lucida',justification='left', key='valtoztat')],
               [sg.Button("Előzmények", size=(10, 1), key="OpenReviewsWindow"), sg.Button("Beállítások", size=(10, 1), key="OpenOptionsWindow")]]
-
-    DataHandler.DataHandler.SaveTranz("2021-01-11","HUF",100,"EUR",200)
-    DataHandler.DataHandler.SaveTranz("2021-01-12","HUF",200,"EUR",100)
-    DataHandler.DataHandler.SaveTranz("2021-01-13","HUF",300,"EUR",400)
 
     window = sg.Window("Valuta átváltás", layout)
     while True:
