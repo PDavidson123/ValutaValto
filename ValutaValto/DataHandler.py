@@ -1,4 +1,6 @@
 import os.path
+from os import listdir
+from os.path import isfile, join
 
 class DataHandler:
 
@@ -12,8 +14,8 @@ class DataHandler:
     else:
         realpath = defPath
 
-    def SaveTranz(mit, mennyit, mire, mennyire):
-        text_file = open(realpath + "\\" + mit + "-" + mennyit + "-" + mire + "-" + mennyire, "w")
+    def SaveTranz(date, mit, mennyit, mire, mennyire):
+        text_file = open(DataHandler.realpath + "\\" + date + "--" + str(mennyit) + "_" + mit + "_" + str(mennyire) + "_" + mire, "w")
         text_file.close()
 
     def GetPath():
@@ -28,3 +30,18 @@ class DataHandler:
         if not os.path.isdir(DataHandler.realpath):
             os.mkdir(DataHandler.realpath)
         
+    def GetFileLists():
+        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
+        justnames = [i.split("--").pop() for i in fullnames] # Dátumot kivesszük
+
+        retlist = []
+
+        for i in justnames:
+            splitted = i.split("_")
+            retlist.append(splitted[0] + " " + splitted[1] + " átváltva " + splitted[2] + " " + splitted[3] + "-ra/re")
+
+        return retlist
+
+    def GetFileListByDates(date):
+        fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
+        return [i.split("--").pop() for i in fullnames if i.split("--")[0] == date]
