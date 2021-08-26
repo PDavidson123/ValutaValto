@@ -24,6 +24,9 @@
     <Compile Include="DataHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Valto.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ValutaValto.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
