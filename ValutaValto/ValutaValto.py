@@ -66,16 +66,16 @@ def main():
             window.Element('valtoztat').Update('')
             window.Element('SaveTranzButton').Update(visible=False)
         if event == "mennyit" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], float(values['mennyit'])))
             window.Element('SaveTranzButton').Update(visible=True)
         if event == "mit" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], float(values['mennyit'])))
             window.Element('SaveTranzButton').Update(visible=True)
         if event == "mire" and values['mennyit'] is not '':
-            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], float(values['mennyit'])))
             window.Element('SaveTranzButton').Update(visible=True)
         if event == "SaveTranzButton":
-            Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit'], True)
+            Valto.Valto.atvalt(values['mit'], values['mire'], float(values['mennyit']), True)
         
     window.close()
 

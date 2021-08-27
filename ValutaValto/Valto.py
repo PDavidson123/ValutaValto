@@ -1,18 +1,35 @@
 import DataHandler
+import requests
+
+class RealTimeCurrencyConverter():
+    def __init__(self,url):
+            self.data = requests.get(url).json()
+            self.currencies = self.data['rates']
+
+    def convert(self, from_currency, to_currency, amount): 
+        initial_amount = amount 
+        if from_currency != 'HUF' : # Ha nem HUF, akkor azzá alakítjuk majd később ez alapján kapjuk meg az átváltást
+            amount = amount / self.currencies[from_currency] 
+  
+        amount = round(amount * self.currencies[to_currency], 3) 
+        return amount
 
 class Valto:
 
-    penznemek = ('AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYN', 'BYR', 'BZD', 'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMK', 'ZMW', 'ZWL')
+    url = 'https://api.exchangerate-api.com/v4/latest/HUF' # Forint alap lekérés
+    converter = RealTimeCurrencyConverter(url)
+
+    penznemek = converter.currencies.keys()
     
     def atvalt(mit, mire, mennyit, realTranz = False):
 
-        valtasEredmeny = 123456
+        valtasEredmeny = Valto.converter.convert(mit,mire,int(mennyit))
 
         if realTranz:
             DataHandler.DataHandler.SaveTranz(mit, mennyit, mire, valtasEredmeny)
-            return mennyit + " " + mit + " átváltva " + str(valtasEredmeny) + " " + mire + "-ra/re"
+            return str(mennyit) + " " + mit + " átváltva " + str(valtasEredmeny) + " " + mire + "-ra/re"
 
-        return mennyit + " " + mit + " = " + str(valtasEredmeny) + " " + mire
+        return str(mennyit) + " " + mit + " = " + str(valtasEredmeny) + " " + mire
 
     def GetValutaListWithFirstFive():
         thatfive = DataHandler.DataHandler.GetLastFiveValuta()
@@ -28,3 +45,4 @@ class Valto:
             makedList.append(i)
 
         return makedList
+

@@ -19,7 +19,8 @@ class DataHandler:
 
     def SaveTranz(mit, mennyit, mire, mennyire):
         date = DataHandler.today.strftime("%Y-%m-%d")
-        text_file = open(DataHandler.realpath + "\\" + date + "--" + str(mennyit) + "_" + mit + "_" + str(mennyire) + "_" + mire, "w")
+        localpath = (DataHandler.realpath + "\\" + date + "--" + str(mennyit) + "_" + mit + "_" + str(mennyire) + "_" + mire).replace('.',',')
+        text_file = open(localpath, "w")
         text_file.close()
 
     def GetPath():
