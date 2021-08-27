@@ -4,7 +4,7 @@ import Valto
 
 def open_reviews_window():
     layout=[[sg.Text('Keresés az alábbi szerint:',size=(20, 1), font='Lucida',justification='left')],
-            [sg.Combo(('Dátum','Valuta'), default_value='Dátum', readonly=True, enable_events=True, size=(8, 2),key='keresesAlap'), sg.Combo(Valto.Valto.penznemek, readonly=True, enable_events=True, size=(5, 6),key='keresendoValuta', visible=False), sg.InputText(size=(20, 1), key='keresendoDatum', tooltip='Minta: 2020-08-24')],
+            [sg.Combo(('Dátum','Valuta'), default_value='Dátum', readonly=True, enable_events=True, size=(8, 2),key='keresesAlap'), sg.Combo(Valto.Valto.penznemek, Valto.Valto.penznemek[0], readonly=True, enable_events=True, size=(5, 6),key='keresendoValuta', visible=False), sg.InputText(size=(20, 1), key='keresendoDatum', tooltip='Minta: 2020-08-24')],
             [sg.Button("Keresés", key="SearchButton")],
             [sg.Listbox(values= DataHandler.DataHandler.GetFileLists(), key='tranzList', size=(30, 10))]]
 
@@ -41,7 +41,7 @@ def open_options_window():
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == "SaveButton":
-            DataHandler.DataHandler.SetPath(values['pathInput'])
+            DataHandler.DataHandler.setPath(values['pathInput'])
             sg.Popup('A mentés sikeresen megtörtént.', keep_on_top=True)
 
         
@@ -49,7 +49,7 @@ def open_options_window():
 
 def main():
     layout = [[sg.Text('Írja be mennyit, majd válassza ki mit mire szeretne átváltani.', size=(50, 1), font='Lucida',justification='left')],
-              [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[0], readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[1], readonly=True, enable_events=True, size=(5, 6),key='mire')],
+              [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.Valto.get_valuta_list_with_first_five(),default_value=Valto.Valto.get_valuta_list_with_first_five()[0], readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.Valto.get_valuta_list_with_first_five(),default_value=Valto.Valto.GetValutaListWithFirstFive()[1], readonly=True, enable_events=True, size=(5, 6),key='mire')],
               [sg.Text('', size=(40, 1), font='Lucida',justification='left', key='valtoztat'), sg.Button("Átváltás", size=(10, 1), key="SaveTranzButton", visible=False)],
               [sg.Button("Előzmények", size=(10, 1), key="OpenReviewsWindow"), sg.Button("Beállítások", size=(10, 1), key="OpenOptionsWindow")]]
 

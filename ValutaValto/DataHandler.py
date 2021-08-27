@@ -17,25 +17,26 @@ class DataHandler:
     else:
         realpath = defPath
 
-    def SaveTranz(mit, mennyit, mire, mennyire):
+    def saveTranz(mit, mennyit, mire, mennyire):
         date = DataHandler.today.strftime("%Y-%m-%d")
         localpath = (DataHandler.realpath + "\\" + date + "--" + str(mennyit) + "_" + mit + "_" + str(mennyire) + "_" + mire).replace('.',',')
         text_file = open(localpath, "w")
         text_file.close()
 
-    def GetPath():
+    def getPath():
         return DataHandler.realpath
 
-    def SetPath(mire):
+    def setPath(mire):
         if not os.path.isdir('C:\\VV'):
             os.mkdir('C:\\VV')
         text_file = open("C:\\VV\\VVPath.ki", "w")
         text_file.write(mire)
         text_file.close()
+        DataHandler.realpath = mire
         if not os.path.isdir(DataHandler.realpath):
-            os.mkdir(DataHandler.realpath)
+            os.makedirs(DataHandler.realpath)
         
-    def GetGoodFormat(list):
+    def get_good_format(list):
         retlist = []
 
         for i in list:
@@ -47,20 +48,17 @@ class DataHandler:
     def GetFileLists():
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         justnames = [i.split("--").pop() for i in fullnames] # Dátumot kivesszük
-
-        return DataHandler.GetGoodFormat(justnames)
+        return DataHandler.get_good_format(justnames)
 
     def GetFileListByDates(date):
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         goodTranz = [i.split("--").pop() for i in fullnames if i.split("--")[0] == date]
-
-        return DataHandler.GetGoodFormat(goodTranz)
+        return DataHandler.get_good_format(goodTranz)
 
     def GetFileListByValuta(valuta):
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         goodTranz = [i.split("--").pop() for i in fullnames if valuta in i.split("--")[1].split("_")]
-
-        return DataHandler.GetGoodFormat(goodTranz)
+        return DataHandler.get_good_format(goodTranz)
 
     def GetLastFiveValuta():
         fivelist = []

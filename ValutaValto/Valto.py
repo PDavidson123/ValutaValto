@@ -19,19 +19,20 @@ class Valto:
     url = 'https://api.exchangerate-api.com/v4/latest/HUF' # Forint alap lekérés
     converter = RealTimeCurrencyConverter(url)
 
-    penznemek = converter.currencies.keys()
-    
+    penznemek = sorted(list(converter.currencies.keys()))
+    print(penznemek)
+
     def atvalt(mit, mire, mennyit, realTranz = False):
 
         valtasEredmeny = Valto.converter.convert(mit,mire,int(mennyit))
 
         if realTranz:
-            DataHandler.DataHandler.SaveTranz(mit, mennyit, mire, valtasEredmeny)
+            DataHandler.DataHandler.saveTranz(mit, mennyit, mire, valtasEredmeny)
             return str(mennyit) + " " + mit + " átváltva " + str(valtasEredmeny) + " " + mire + "-ra/re"
 
         return str(mennyit) + " " + mit + " = " + str(valtasEredmeny) + " " + mire
 
-    def GetValutaListWithFirstFive():
+    def get_valuta_list_with_first_five():
         thatfive = DataHandler.DataHandler.GetLastFiveValuta()
         anothers = set(Valto.penznemek)
 
