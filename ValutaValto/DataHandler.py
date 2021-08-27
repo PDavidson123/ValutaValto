@@ -45,22 +45,25 @@ class DataHandler:
 
         return retlist
 
-    def GetFileLists():
+    def get_file_lists():
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         justnames = [i.split("--").pop() for i in fullnames] # Dátumot kivesszük
         return DataHandler.get_good_format(justnames)
 
-    def GetFileListByDates(date):
+    def get_file_list_by_dates(date):
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         goodTranz = [i.split("--").pop() for i in fullnames if i.split("--")[0] == date]
         return DataHandler.get_good_format(goodTranz)
 
-    def GetFileListByValuta(valuta):
+    def get_file_list_by_currency(currency):
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
-        goodTranz = [i.split("--").pop() for i in fullnames if valuta in i.split("--")[1].split("_")]
+        goodTranz = [i.split("--").pop() for i in fullnames if currency in i.split("--")[1].split("_")]
         return DataHandler.get_good_format(goodTranz)
 
-    def GetLastFiveValuta():
+    """
+        Az utolsó 5 használt valuta
+    """
+    def get_last_five_valuta():
         fivelist = []
 
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása

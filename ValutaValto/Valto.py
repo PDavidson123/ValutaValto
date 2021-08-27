@@ -6,12 +6,12 @@ class RealTimeCurrencyConverter():
             self.data = requests.get(url).json()
             self.currencies = self.data['rates']
 
-    def convert(self, from_currency, to_currency, amount): 
+    def convert(self, from_curr, to_curr, amount): 
         initial_amount = amount 
-        if from_currency != 'HUF' : # Ha nem HUF, akkor azzá alakítjuk majd később ez alapján kapjuk meg az átváltást
-            amount = amount / self.currencies[from_currency] 
+        if from_curr != 'HUF' : # Ha nem HUF, akkor azzá alakítjuk majd később ez alapján kapjuk meg az átváltást
+            amount = amount / self.currencies[from_curr] 
   
-        amount = round(amount * self.currencies[to_currency], 3) 
+        amount = round(amount * self.currencies[to_curr], 3) 
         return amount
 
 class Valto:
@@ -20,20 +20,19 @@ class Valto:
     converter = RealTimeCurrencyConverter(url)
 
     penznemek = sorted(list(converter.currencies.keys()))
-    print(penznemek)
 
-    def atvalt(mit, mire, mennyit, realTranz = False):
+    def atvalt(from_curr, to_curr, amount, realTranz = False):
 
-        valtasEredmeny = Valto.converter.convert(mit,mire,int(mennyit))
+        valtasEredmeny = Valto.converter.convert(from_curr,to_curr,int(amount))
 
         if realTranz:
-            DataHandler.DataHandler.saveTranz(mit, mennyit, mire, valtasEredmeny)
-            return str(mennyit) + " " + mit + " átváltva " + str(valtasEredmeny) + " " + mire + "-ra/re"
+            DataHandler.DataHandler.saveTranz(from_curr, amount, to_curr, valtasEredmeny)
+            return str(amount) + " " + from_curr + " átváltva " + str(valtasEredmeny) + " " + to_curr + "-ra/re"
 
-        return str(mennyit) + " " + mit + " = " + str(valtasEredmeny) + " " + mire
+        return str(amount) + " " + from_curr + " = " + str(valtasEredmeny) + " " + to_curr
 
     def get_valuta_list_with_first_five():
-        thatfive = DataHandler.DataHandler.GetLastFiveValuta()
+        thatfive = DataHandler.DataHandler.get_last_five_valuta()
         anothers = set(Valto.penznemek)
 
         lastItems = anothers.difference(thatfive)
