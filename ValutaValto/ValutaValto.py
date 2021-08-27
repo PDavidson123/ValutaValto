@@ -50,7 +50,7 @@ def open_options_window():
 def main():
     layout = [[sg.Text('Írja be mennyit, majd válassza ki mit mire szeretne átváltani.', size=(50, 1), font='Lucida',justification='left')],
               [sg.InputText(size=(22, 2), key='mennyit', enable_events=True), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[0], readonly=True, enable_events=True, size=(5, 6),key='mit'), sg.Combo(Valto.Valto.GetValutaListWithFirstFive(),default_value=Valto.Valto.GetValutaListWithFirstFive()[1], readonly=True, enable_events=True, size=(5, 6),key='mire')],
-              [sg.Text('', size=(50, 1), font='Lucida',justification='left', key='valtoztat')],
+              [sg.Text('', size=(40, 1), font='Lucida',justification='left', key='valtoztat'), sg.Button("Átváltás", size=(10, 1), key="SaveTranzButton", visible=False)],
               [sg.Button("Előzmények", size=(10, 1), key="OpenReviewsWindow"), sg.Button("Beállítások", size=(10, 1), key="OpenOptionsWindow")]]
 
     window = sg.Window("Valuta átváltás", layout)
@@ -64,12 +64,18 @@ def main():
             open_options_window()
         if event == "mennyit" and values['mennyit'] is '':
             window.Element('valtoztat').Update('')
+            window.Element('SaveTranzButton').Update(visible=False)
         if event == "mennyit" and values['mennyit'] is not '':
             window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('SaveTranzButton').Update(visible=True)
         if event == "mit" and values['mennyit'] is not '':
             window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('SaveTranzButton').Update(visible=True)
         if event == "mire" and values['mennyit'] is not '':
             window.Element('valtoztat').Update(Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit']))
+            window.Element('SaveTranzButton').Update(visible=True)
+        if event == "SaveTranzButton":
+            Valto.Valto.atvalt(values['mit'], values['mire'], values['mennyit'], True)
         
     window.close()
 

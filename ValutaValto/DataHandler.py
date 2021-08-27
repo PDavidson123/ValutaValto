@@ -1,11 +1,14 @@
 import os.path
 from os import listdir
 from os.path import isfile, join
+from datetime import date
 
 class DataHandler:
 
-    defPath = "C:\\ValutaValto"
+    defPath = "C:\\VV"
     realpath = ""
+
+    today = date.today()
 
     if os.path.isfile("C:\\VV\\VVPath.ki"):
         text_file = open("C:\\VV\\VVPath.ki", "r")
@@ -14,7 +17,8 @@ class DataHandler:
     else:
         realpath = defPath
 
-    def SaveTranz(date, mit, mennyit, mire, mennyire):
+    def SaveTranz(mit, mennyit, mire, mennyire):
+        date = DataHandler.today.strftime("%Y-%m-%d")
         text_file = open(DataHandler.realpath + "\\" + date + "--" + str(mennyit) + "_" + mit + "_" + str(mennyire) + "_" + mire, "w")
         text_file.close()
 
@@ -63,11 +67,13 @@ class DataHandler:
         fullnames = [i for i in listdir(DataHandler.realpath) if isfile(join(DataHandler.realpath, i))] # Csak a file nevek megkapása
         formedTranz = reversed([i.split("--").pop() for i in fullnames]) # Idő nélküli tranzakció nevek
 
-        for i in formedTranz:
+        for i in formedTranz: # Az első 5 valuta hozzáadása a listához
             splitted = i.split("_")
             if len(fivelist) < 5 and splitted[1] not in fivelist:
                 fivelist.append(splitted[1])
             if len(fivelist) < 5 and splitted[3] not in fivelist:
                 fivelist.append(splitted[3])
+            if len(fivelist) == 5: # A sebesség kedvéért ugorjunk ki ha megvan
+                break
 
         return fivelist
