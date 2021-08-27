@@ -10,6 +10,8 @@ class DataHandler:
 
     today = date.today()
 
+    if not os.path.isdir('C:\\VV'):
+            os.mkdir('C:\\VV')
     if os.path.isfile("C:\\VV\\VVPath.ki"):
         text_file = open("C:\\VV\\VVPath.ki", "r")
         realpath = text_file.read()
